@@ -1,5 +1,9 @@
+using DogukanTURHAL.Covid19.API.Context;
+using DogukanTURHAL.Covid19.API.Hubs;
+using DogukanTURHAL.Covid19.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,7 +23,19 @@ namespace DogukanTURHAL.Covid19.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration["ConnectionString"]);
+            });
+            services.AddScoped<CovidService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.WithOrigins("https://localhost:44374").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                });
+            });
+            services.AddSignalR();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -40,12 +56,14 @@ namespace DogukanTURHAL.Covid19.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<CovidHub>("/CovidHub");
             });
         }
     }
