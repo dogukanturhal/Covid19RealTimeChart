@@ -23,6 +23,9 @@ namespace DogukanTURHAL.Covid19.API.Services
         {
             return _context.Covids.AsQueryable();
         }
+        /*
+         * Covid Vakalarını dbye kaydetme servisi oluşturuldu kaydetme yaptıktan sonra webscoket ile gönderme işlemi yapılmaktadır.
+         */
         public async Task SaveCovid(Covid covid)
         {
             await _context.Covids.AddAsync(covid);
