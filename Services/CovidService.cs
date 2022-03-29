@@ -29,6 +29,10 @@ namespace DogukanTURHAL.Covid19.API.Services
             await _context.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("RecieveCovidList", GetCovidList());
         }
+        /*
+         * Bu bölümde covid vakalarını generate eden bir sistem gerçekleştirdim. aklıma ilk gelen sistemde entity framework kullanmadım.
+         * Eski tip kullanım yaparak db'ye sorgu göndererek pivot oluşturdum.
+         */
         public List<CovidChart> GetCovidList()
         {
             List<CovidChart> charts = new List<CovidChart>();
@@ -46,6 +50,9 @@ namespace DogukanTURHAL.Covid19.API.Services
                         CovidChart chart = new CovidChart();
 
                         chart.CovidDate = reader.GetDateTime(0).ToShortDateString();
+                        /*
+                            Bu bölümde range ile verilerimi dolaşarak ekleme oluşturduğum verilerimi ekledim.
+                         */
 
                         Enumerable.Range(1, 5).ToList().ForEach(x =>
                          {

@@ -2,6 +2,13 @@
 
 namespace DogukanTURHAL.Covid19.API.Entities
 {
+    /**
+     Bu bölümde Covid entity oluşturdum bu entity sayesinde entityframeworkCore ile code first yapı kullanarak veritabanında oluşturma yapabilmeme olanak sağladı.
+     */
+
+    /**
+        Bu bölümde geliştirme yapılabilir enum olarak tanımladığım şehirler için ayrı bir entity oluşturulabilir.
+     */
     public enum ECity
     {
         Istanbul=1,
